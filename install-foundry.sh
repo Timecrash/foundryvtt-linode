@@ -24,6 +24,7 @@ pm2 start "$FOUNDRY_APP_DIR/resources/app/main.js" --name foundry --user foundry
 
 # Set up Caddy if required
 if [ -n "$FOUNDRY_HOSTNAME" ]; then
+  # Install Foundry
   echo 'deb [trusted=yes] https://apt.fury.io/caddy/ /' >> /etc/apt/sources.list.d/caddy-fury.list
   apt update
   apt install -y caddy
