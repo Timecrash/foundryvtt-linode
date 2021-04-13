@@ -9,7 +9,7 @@
 curl -fsSL https://deb.nodesource.com/setup_15.x | bash -
 apt install -y libssl-dev unzip nodejs
 
-# Create user to manage Foundry
+# Create system user to manage Foundry
 useradd -r foundry
 
 # Install Foundry
