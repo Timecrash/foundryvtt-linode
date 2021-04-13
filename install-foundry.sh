@@ -2,21 +2,25 @@
 
 #<UDF name="FOUNDRY_URL" label="FoundryVTT download URL">
 #<UDF name="FOUNDRY_HOSTNAME" label="Your desired hostname for Foundry" example="foundry.example.com" default="">
-#<UDF name="FOUNDRY_APP_DIR" label="Location to save FoundryVTT app" default="/root/foundryvtt">
-#<UDF name="FOUNDRY_DATA_DIR" label="Location to save FoundryVTT assets/modules/systems" default="/root/foundrydata">
+#<UDF name="FOUNDRY_APP_DIR" label="Location to save FoundryVTT app" default="/opt/foundryvtt">
+#<UDF name="FOUNDRY_DATA_DIR" label="Location to save FoundryVTT assets/modules/systems" default="/opt/foundrydata">
 
 # Install prerequisites
 curl -fsSL https://deb.nodesource.com/setup_15.x | bash -
 apt install -y libssl-dev unzip nodejs
 
+# Create user to manage Foundry
+useradd -r foundry
+
 # Install Foundry
 mkdir -p "$FOUNDRY_APP_DIR" "$FOUNDRY_DATA_DIR"
 wget -O "$FOUNDRY_APP_DIR/foundryvtt.zip" "$FOUNDRY_URL"
 unzip "$FOUNDRY_APP_DIR/foundryvtt.zip" -d "$FOUNDRY_APP_DIR"
+chown -R foundry:foundry "$FOUNDRY_APP_DIR" "$FOUNDRY_DATA_DIR"
 
 # Install PM2 for daemon management
 npm install pm2@latest -g
-pm2 start "$FOUNDRY_APP_DIR/resources/app/main.js" --name foundry -- --dataPath="$FOUNDRY_DATA_DIR"
+pm2 start "$FOUNDRY_APP_DIR/resources/app/main.js" --name foundry --user foundry -- --dataPath="$FOUNDRY_DATA_DIR"
 
 # Set up Caddy if required
 if [ -n "$FOUNDRY_HOSTNAME" ]; then
