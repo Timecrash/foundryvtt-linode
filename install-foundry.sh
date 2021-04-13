@@ -22,6 +22,10 @@ chown -R foundry:foundry "$FOUNDRY_APP_DIR" "$FOUNDRY_DATA_DIR"
 npm install pm2@latest -g
 pm2 start "$FOUNDRY_APP_DIR/resources/app/main.js" --name foundry --user foundry -- --dataPath="$FOUNDRY_DATA_DIR"
 
+# Allow PM2 to start at boot
+pm2 startup
+pm2 save
+
 # Set up Caddy if required
 if [ -n "$FOUNDRY_HOSTNAME" ]; then
   # Install Foundry
