@@ -65,8 +65,8 @@ EOF
   pm2 restart foundry
 
   # Start Caddy
-  service caddy enable
-  service caddy start
+  systemctl enable caddy
+  systemctl start caddy
 
   echo "FoundryVTT setup complete! Please access your instance here: https://$FOUNDRY_HOSTNAME"
 else
