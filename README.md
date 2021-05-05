@@ -6,4 +6,4 @@ For the Foundry URL, this is available on your Purchased Licenses account page a
 
 For Caddy, you will need to input a hostname you own, like foundry.example.com. Of course, you will need to set up the DNS resolution yourself.
 
-PM2 assumes the root user for its service creation. So be sure to su to root to control it (pm2 restart foundry, pm2 status foundry).
+PM2 assumes the root user for its service creation. So be sure to use sudo to control it (sudo pm2 restart foundry, sudo pm2 status foundry).
