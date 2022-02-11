@@ -5,8 +5,14 @@
 #<UDF name="FOUNDRY_APP_DIR" label="Location to save FoundryVTT app" default="/opt/foundryvtt">
 #<UDF name="FOUNDRY_DATA_DIR" label="Location to save FoundryVTT assets/modules/systems" default="/opt/foundrydata">
 
+# Per the docs, nodejs setup differs between Debian and Ubuntu
+if [ "$(lsb_release -si)" = 'Debian' ]; then
+  curl -fsSL https://deb.nodesource.com/setup_17.x | bash -
+else
+  curl -fsSL https://deb.nodesource.com/setup_17.x | sudo -E bash -
+fi
+
 # Install prerequisites
-curl -fsSL https://deb.nodesource.com/setup_15.x | bash -
 apt install -y libssl-dev unzip nodejs
 
 # Create system user to manage Foundry
