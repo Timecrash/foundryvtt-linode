@@ -42,6 +42,11 @@ if [ -n "$FOUNDRY_HOSTNAME" ]; then
   # Configure Caddy for HTTPS proxying
   cat > /etc/caddy/Caddyfile <<EOF
 ${FOUNDRY_HOSTNAME} {
+  @http {
+    protocol http
+  }
+  redir @http https://${FOUNDRY_HOSTNAME}
+
   reverse_proxy localhost:30000
 }
 EOF
