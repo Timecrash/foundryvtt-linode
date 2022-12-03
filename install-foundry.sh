@@ -5,11 +5,11 @@
 #<UDF name="FOUNDRY_APP_DIR" label="Location to save FoundryVTT app" default="/opt/foundryvtt">
 #<UDF name="FOUNDRY_DATA_DIR" label="Location to save FoundryVTT assets/modules/systems" default="/opt/foundrydata">
 
-# Per the docs, nodejs setup differs between Debian and Ubuntu
+# Per the nodejs docs, nodejs setup differs between Debian and Ubuntu
 if [ "$(lsb_release -si)" = 'Debian' ]; then
-  curl -fsSL https://deb.nodesource.com/setup_17.x | bash -
+  curl -fsSL https://deb.nodesource.com/setup_19.x | bash -
 else
-  curl -fsSL https://deb.nodesource.com/setup_17.x | sudo -E bash -
+  curl -fsSL https://deb.nodesource.com/setup_19.x | sudo -E bash -
 fi
 
 # Install prerequisites
@@ -34,8 +34,10 @@ pm2 save
 
 # Set up Caddy if required
 if [ -n "$FOUNDRY_HOSTNAME" ]; then
-  # Install Foundry
-  echo 'deb [trusted=yes] https://apt.fury.io/caddy/ /' >> /etc/apt/sources.list.d/caddy-fury.list
+  # Install Caddy according to official instructions
+  apt install -y debian-keyring debian-archive-keyring apt-transport-https
+  curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/gpg.key' | sudo gpg --dearmor -o /usr/share/keyrings/caddy-stable-archive-keyring.gpg
+  curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt' | sudo tee /etc/apt/sources.list.d/caddy-stable.list
   apt update
   apt install -y caddy
 
@@ -58,16 +60,20 @@ EOF
   "upnp": true,
   "fullscreen": false,
   "hostname": "${FOUNDRY_HOSTNAME}",
+  "localHostname": null,
   "routePrefix": null,
   "sslCert": null,
   "sslKey": null,
   "awsConfig": null,
   "dataPath": "${FOUNDRY_DATA_DIR}",
+  "passwordSalt": null,
   "proxySSL": true,
   "proxyPort": 443,
-  "minifyStaticFiles": true,
-  "updateChannel": "release",
+  "serviceConfig": null,
+  "updateChannel": "stable",
   "language": "en.core",
+  "upnpLeaseDuration": null,
+  "compressStatic": true,
   "world": null
 }
 EOF
